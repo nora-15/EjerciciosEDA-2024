@@ -24,7 +24,20 @@ class Localizador:
         self.__obtener_direccion()
         self.clima = Clima(self.latitud, self.longitud)
 
-    
+    def to_dict(self):
+        return{
+            "latitud":self.latitud,
+            "longitud":self.longitud,
+            "direccion":self.direccion,
+            "ciudad":self.ciudad,
+            "barrio":self.barrio,
+            "provincia":self.provincia,
+            "estado":self.estado,
+            "pais":self.provincia,
+            "codigo_postal":self.codigo_postal,
+            "clima":self.clima.to_dict()
+        }
+
 
     def __obtener_direccion(self):
         try:

@@ -1,3 +1,4 @@
+from pymongo import MongoClient
 
 # Clase GestorDeDatosClimaticos para manejar el flujo de datos y presentación
 
@@ -13,6 +14,7 @@ class GestorDeDatosClimaticos:
 
 
     def __init__(self):
+        self.client = MongoClient('mongodb://localhost:27017/')
         print("Iniciando gestor de datos climaticos")
         print(f"Numero de ubicaciones actuales: {self.get_numero_ubicaciones()}")
 
@@ -46,7 +48,11 @@ class GestorDeDatosClimaticos:
                 break
         
         if not ubicacion_encontrada:
-            self.ubicaciones.append(Localizador(latitud, longitud))
+            p=Localizador(latitud,longitud)#con esto obtenemos ciudad, cp, barrio; a traves de la clase localizador dandoles solo la long y lat
+            self.ubicaciones.append(p)#esto lo que hace es añadir lo que esta almacenado en p al la lista de ubicaciones 
+            tabla=p.to_dict()# y con esto, convertimos a tabla hash
+            self.client['localizaciones']['hola'].insert_one(tabla) # con esto, lo que hace es insertar la tabla en el database del mongo
+            #almacenar en la base de datos la tabla hash de la clase p
             print("Ubicación agregada correctamente")
         else:
             print("Ubicación ya existe")

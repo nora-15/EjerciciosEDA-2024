@@ -1,4 +1,5 @@
 
+
 # Clase GestorDeDatosClimaticos para manejar el flujo de datos y presentación
 
 import json
@@ -11,6 +12,7 @@ class GestorDeDatosClimaticos:
 
 
     def __init__(self):
+        
         print("Iniciando gestor de datos climaticos")
         print(f"Numero de ubicaciones actuales: {self.get_numero_ubicaciones()}")
 
@@ -44,8 +46,9 @@ class GestorDeDatosClimaticos:
                 break
         
         if not ubicacion_encontrada:
-            p=Localizador(latitud, longitud)
-            self.ubicaciones.append(p)
+            p=Localizador(latitud, longitud) # con esto obtenemos la ciudad, cp, barrio; a través de la clase localizador dandoles solo la lat y long
+            self.ubicaciones.append(p) # añadir lo uqe esta alamacenado en p a la lista de ubicaciones
+            
             # almacenar en base de datos la tabla has de la clase p
             print("Ubicación agregada correctamente")
         else:

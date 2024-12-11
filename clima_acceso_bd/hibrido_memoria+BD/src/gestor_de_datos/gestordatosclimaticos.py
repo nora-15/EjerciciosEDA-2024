@@ -4,7 +4,7 @@
 
 import json
 from clases.localizador import Localizador
-
+from base_de_datos import base_de_datos
 
 class GestorDeDatosClimaticos:
 
@@ -12,7 +12,7 @@ class GestorDeDatosClimaticos:
 
 
     def __init__(self):
-        
+        self.bd = base_de_datos.basedatos() #crear un tipo de variable de la clase base de datos que es la que está creada en bd.py
         print("Iniciando gestor de datos climaticos")
         print(f"Numero de ubicaciones actuales: {self.get_numero_ubicaciones()}")
 
@@ -48,7 +48,9 @@ class GestorDeDatosClimaticos:
         if not ubicacion_encontrada:
             p=Localizador(latitud, longitud) # con esto obtenemos la ciudad, cp, barrio; a través de la clase localizador dandoles solo la lat y long
             self.ubicaciones.append(p) # añadir lo uqe esta alamacenado en p a la lista de ubicaciones
-            
+            tabla = p.to_dict() #con esto creamos una variable que la convertimos a tabla hash para despues insertarla en la bd
+            self.bd.insert(tabla)
+            self.bd.printbd()
             # almacenar en base de datos la tabla has de la clase p
             print("Ubicación agregada correctamente")
         else:

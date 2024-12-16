@@ -13,10 +13,10 @@ class GestorDeDatosClimaticos:
 
     def __init__(self):
         self.bd = base_de_datos.basedatos() #crear un tipo de variable de la clase base de datos que es la que está creada en bd.py
+       # self.bd.vaciarcoleccion() #(esta funcion sirve para depurar)
         print("Iniciando gestor de datos climaticos")
+        self.ubicaciones = self.bd.pedirdatos() #pedir los datos del mongo
         print(f"Numero de ubicaciones actuales: {self.get_numero_ubicaciones()}")
-
-
     def get_numero_ubicaciones(self):
         return len(self.ubicaciones)
 

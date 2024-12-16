@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-
+from clases.localizador import Localizador
 class basedatos: 
     def __init__(self):
         self.client = MongoClient('mongodb://localhost:27017/')
@@ -30,3 +30,22 @@ class basedatos:
             print("velocidad del viento: ",localizacion["clima"]["velocidad_viento"])
             print("")
     
+    
+    def pedirdatos(self):
+        info = self.client[self.dbname][self.collectionname].find({}) #con esto lo que hacemos es encontrar la informacion que ya está en la database y almacenarla en una variable
+
+#queremos devolver una lista  con esa informacion, solo queremos que devuelva la latitud y longitud para que no haya mucha info, y como ya hay otra funcion que al "mencionar" la lat y long, nos darán los demás datos
+        listaubicaciones = [] 
+        for localizacion in info: 
+            latitud = localizacion["latitud"]
+            longitud = localizacion["longitud"]
+
+            loc = Localizador(latitud,longitud)
+            listaubicaciones.append(loc)
+        #print("localizaciones iniciales",listaubicaciones)
+        return listaubicaciones
+    
+    #con esta funcion lo que hacemos es eliminar todo lo que hay en localizaciones-info
+    def vaciarcoleccion(self):
+        bd = self.client[self.dbname][self.collectionname]
+        bd.delete_many({})

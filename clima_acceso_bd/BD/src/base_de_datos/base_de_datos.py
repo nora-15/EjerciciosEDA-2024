@@ -23,3 +23,38 @@ class basedatos:
             return localizacion
         else: 
             return None
+    
+    #funcion buscar por codigo postal
+    def buscarporcp(self,codigopostal):
+        resultado = self.client[self.dbname][self.collectionname].find({"codigo_postal":codigopostal})
+        if(resultado!=None):
+            localizaciones = [] #hemos creado una lista que almacenará todas las ubicaciones que comparten provincia
+            for ubicacion in resultado:
+                localizacion = Localizador(ubicacion["latitud"],ubicacion["longitud"])
+                localizaciones.append(localizacion)
+            return localizaciones
+        else:
+            return None
+        
+    #funcion buscar por provincia
+    def buscarporprov(self,provincia):
+        resultado = self.client[self.dbname][self.collectionname].find({"provincia":provincia})
+        if(resultado!=None):
+            localizaciones = [] #hemos creado una lista que almacenará todas las ubicaciones que comparten provincia
+            for ubicacion in resultado:
+                localizacion = Localizador(ubicacion["latitud"],ubicacion["longitud"])
+                localizaciones.append(localizacion)
+            return localizaciones
+        else:
+            return None
+    
+
+    def obtenerlocalizaciones(self):
+        localizaciones = self.client[self.dbname][self.collectionname].find({})
+        localizaciones_lista = list(localizaciones)
+        return localizaciones_lista
+    
+     #con esta funcion lo que hacemos es eliminar todo lo que hay en localizaciones-info
+    def vaciarcoleccion(self):
+        bd = self.client[self.dbname][self.collectionname]
+        bd.delete_many({})

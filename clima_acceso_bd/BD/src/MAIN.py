@@ -19,9 +19,11 @@ def buscar_ubicacion(gestor):
     codigo_postal = input("Introduce el codigo postal que deseas buscar: ")
     
     # Buscar la ubicación en el diccionario
-    ubicacion = gestor.buscar_por_codigo_postal(codigo_postal)
-    if ubicacion:
-        print(f"Ubicación encontrada: {ubicacion.mostrar_informacion()}")
+    resultados = gestor.buscar_por_codigo_postal(codigo_postal)
+    if resultados:
+        # print(f"Numero de ubicaciones en cp '{codigo_postal}': {len(resultados)}")
+        for ubicacion in resultados:
+            ubicacion.mostrar_informacion()
     else:
         print("Ubicación no encontrada.")
 

@@ -13,6 +13,7 @@ class GestorDeDatosClimaticos:
 
     def __init__(self):
         self.bd = base_de_datos.basedatos() #con esto estamos creando una variable que se llama bd inicializada con la clase de basededatos
+        # self.bd.vaciarcoleccion()
         print("Iniciando gestor de datos climaticos")
         print(f"Numero de ubicaciones actuales: {self.get_numero_ubicaciones()}")
 
@@ -22,12 +23,15 @@ class GestorDeDatosClimaticos:
         return(loc)
 
     def mostrar_codigos_postales_y_provincias_almacenadas(self):
+        listalocalizaciones = self.bd.obtenerlocalizaciones()
         provincias_codigos_postales = {}
-        for ubicacion in self.ubicaciones:
-            if ubicacion.provincia in provincias_codigos_postales:
-                provincias_codigos_postales[ubicacion.provincia].append(ubicacion.codigo_postal)
+        for ubicacion in listalocalizaciones:
+            provincia = ubicacion["provincia"]
+            codigopostal = ubicacion["codigo_postal"]
+            if provincia in provincias_codigos_postales:
+                provincias_codigos_postales[provincia].append(codigopostal)
             else:
-                provincias_codigos_postales[ubicacion.provincia] = [ubicacion.codigo_postal]
+                provincias_codigos_postales[provincia] = [codigopostal]
 
         if provincias_codigos_postales:
             print(json.dumps(provincias_codigos_postales, indent=2, ensure_ascii=False))
@@ -56,16 +60,10 @@ class GestorDeDatosClimaticos:
         return ubicacion_encontrada
 
     def buscar_por_codigo_postal(self,codigo_postal):
-        ubicacion_encontrada = None
-        for ubicacion in self.ubicaciones:
-            if ubicacion.codigo_postal == codigo_postal:
-                ubicacion_encontrada = ubicacion
-                break
-        return ubicacion_encontrada
+        lista_ubicaciones = self.bd.buscarporcp(codigo_postal)
+        return lista_ubicaciones
     
     def buscar_por_provincia(self,provincia):
-        lista_ubicaciones = []
-        for ubicacion in self.ubicaciones:
-            if ubicacion.provincia == provincia:
-                lista_ubicaciones.append(ubicacion)
+        lista_ubicaciones = self.bd.buscarporprov(provincia)
+
         return lista_ubicaciones

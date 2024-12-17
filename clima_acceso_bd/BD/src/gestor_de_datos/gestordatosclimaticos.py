@@ -3,7 +3,6 @@ from pymongo import MongoClient
 # Clase GestorDeDatosClimaticos para manejar el flujo de datos y presentación
 
 
-
 import json
 from clases.localizador import Localizador
 from base_de_datos import base_de_datos
@@ -67,3 +66,4 @@ class GestorDeDatosClimaticos:
         lista_ubicaciones = self.bd.buscarporprov(provincia)
 
         return lista_ubicaciones
+    

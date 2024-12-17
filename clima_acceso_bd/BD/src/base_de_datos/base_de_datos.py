@@ -1,5 +1,8 @@
 from pymongo import MongoClient
 from clases.localizador import Localizador
+
+# lo que hacemos en la base de datos es definir cada una de las funciones
+
 class basedatos: 
     def __init__(self):
         self.client = MongoClient('mongodb://localhost:27017/')
@@ -9,16 +12,18 @@ class basedatos:
 
     def numerolocalizaciones(self):
         bd = self.client[self.dbname][self.collectionname] #accedemos a las localizaaciones y lo alacenamos en la bd
-        numerototal = bd.count_documents({})
-        return numerototal 
+        numerototal = bd.count_documents({}) # estamos contando el numero de locaclizaciones y lo estamos almacenando en una variable
+        return numerototal # devuelve esa variable con la información
     
-    #es una funcion que lo que hace es insertar la localizacion
+    #es una funcion que lo que hace es insertar la ubicacion
     def insertarubicacion(self,localizacion):
         self.client[self.dbname][self.collectionname].insert_one(localizacion)
 
+    
+    # definir la funcion de buscar por latitud y longitud 
     def buscarporlatlong(self,latitud,longitud):
         resultado = self.client[self.dbname][self.collectionname].find_one({"latitud":latitud,"longitud":longitud}) #que busque en la base de datos si ya está una localcizacion con esa lati y long
-        if (resultado!=None):
+        if (resultado!=None): # si no está en la bd, que se almacene en la bd y si ya existe, que devuelva None
             localizacion = Localizador(resultado["latitud"],resultado["longitud"])
             return localizacion
         else: 
@@ -49,6 +54,7 @@ class basedatos:
             return None
     
 
+    #función obtener localizaciones
     def obtenerlocalizaciones(self):
         localizaciones = self.client[self.dbname][self.collectionname].find({})
         localizaciones_lista = list(localizaciones)
@@ -58,3 +64,4 @@ class basedatos:
     def vaciarcoleccion(self):
         bd = self.client[self.dbname][self.collectionname]
         bd.delete_many({})
+

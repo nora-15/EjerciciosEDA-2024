@@ -7,6 +7,7 @@ import json
 from clases.localizador import Localizador
 from base_de_datos import base_de_datos
 
+# hay que crear una clase, en este caso gestor de datos climaticos, para gestionar los datos climaticos
 class GestorDeDatosClimaticos:
 
 
@@ -21,14 +22,16 @@ class GestorDeDatosClimaticos:
         loc = self.bd.numerolocalizaciones()
         return(loc)
 
+    # con esta funcion lo que hacemos es mostrar los cp y provincias que hay en la bd
     def mostrar_codigos_postales_y_provincias_almacenadas(self):
         listalocalizaciones = self.bd.obtenerlocalizaciones()
         provincias_codigos_postales = {}
         for ubicacion in listalocalizaciones:
             provincia = ubicacion["provincia"]
             codigopostal = ubicacion["codigo_postal"]
-            if provincia in provincias_codigos_postales:
+            if provincia in provincias_codigos_postales: # si la provincia está en la bd, añadimos el cp a la lista
                 provincias_codigos_postales[provincia].append(codigopostal)
+            # sino, creamos una nueva entrada con la provincia y el cp
             else:
                 provincias_codigos_postales[provincia] = [codigopostal]
 
